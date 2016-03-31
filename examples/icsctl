@@ -28,12 +28,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 '''
 
 import getopt
-import os
-import os.path
+import icsectl
 import serial
 import sys
 
 def checkdev(dev):	
+	"""
+	Writes error message and exits if device is not specified.
+
+	:params dev: device
+	"""
 	if dev == None:
 		print("Device must be specified.")
 		print()
@@ -57,9 +61,14 @@ def main():
 			checkdev(dev)
 			bits = 0
 		elif o == "-d":
-			writestatus(dev, bits)
+			try:
+				icsectl.writestatus(dev, bits)
+			except serial.serialutil.SerialException as err:
+				print(err)
+				sys.exit(1)
+			printstatus(dev,bits)
 			dev = a
-			bits = readstatus(dev)
+			bits = icsectl.readstatus(dev)
 		elif o == "-f":
 			checkdev(dev)
 			bits &= -int(pow(2.0, int(a))) - 1
@@ -69,31 +78,30 @@ def main():
 		elif o == "-o":
 			checkdev(dev)
 			bits |= int(pow(2.0, int(a)))
-	writestatus(dev, bits)
-	
-def getfilename(dev):
-	path = os.path.expanduser("~/.icsctl")
-	if False == os.path.exists(path):
-		os.mkdir(path)
-	filename = path + "/icsctl" + dev.replace("/", "-")
-	return filename	
-
-def readstatus(dev):
 	try:
-		file = open(getfilename(dev), "r")
-	except FileNotFoundError as err:
-		return 0
-	a = file.readline()
-	if (a == "IcsCtl\n"):
-		a = file.readline()
-		try:
-			bits = int(a)
-		except ValueError:
-			bits = 0
-	else:
-		bits = 0
-	file.close()
-	return bits
+		icsectl.writestatus(dev, bits)
+	except serial.serialutil.SerialException as err:
+		print(err)
+		sys.exit(1)
+	printstatus(dev,bits)
+
+def printstatus(dev, bits):
+	"""
+	Prints status of device.
+
+	:param dev: device
+	:param bits: bit mask
+	"""
+	if dev == None:
+		return
+	print(dev)
+	for i in range(0, 8):
+		if 0 != int(pow(2.0, i)) & bits:
+			bit = 1
+		else:
+			bit = 0
+		print("    outlet {}: {}".format(i, bit))
+	print()
 
 def usage():
 	"""
@@ -111,37 +119,6 @@ def usage():
 	print("The device must be specified before the actions.")
 	print("If multiple devices are specified, the actions relate")
 	print("to the last device specified.")
-
-def writestatus(dev, bits):
-	if dev == None:
-		return
-	# Open serial connection.
-	try:
-		ser = serial.Serial(
-			port = dev, \
-			baudrate =  9600, \
-			stopbits = serial.STOPBITS_ONE, \
-			bytesize = serial.EIGHTBITS, \
-			timeout = .1)
-		ser.write(bytearray([bits]))
-		ser.close()
-	except serial.serialutil.SerialException as err:
-		print(err)
-		sys.exit(1)
-	
-	print(dev)
-	for i in range(0, 8):
-		if 0 != int(pow(2.0, i)) & bits:
-			bit = 1
-		else:
-			bit = 0
-		print("    outlet {}: {}".format(i, bit))
-	print()
-
-	file = open(getfilename(dev), "w")
-	file.write("IcsCtl" + "\n")
-	file.write(str(bits) + "\n")
-	file.close()
 
 if __name__ == "__main__":
 	main()
