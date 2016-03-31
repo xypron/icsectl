@@ -35,8 +35,8 @@ Initialization
 The initialization of the devices is handled by udev.
 To set up udev::
 
-    sudo cp examples/icsudev.py /lib/udev
-    sudo cp examples/99-icsctl.rules /etc/udev/rules.d
+    sudo cp examples/icseudev.py /lib/udev
+    sudo cp examples/99-icsectl.rules /etc/udev/rules.d
     sudo udevadm control --reload-rules
 
 When a device is plugged in the relays are switched on by default.
@@ -60,7 +60,7 @@ To allow a user to use the device call::
 Usage
 -----
 
-The script examples/icsctl can be used to switch individual relays.
+The script examples/icsectl can be used to switch individual relays.
 The status is kept in a file in the user's home directory.
 If the file does not yet exist, it is assumed that all relays are switched off.
 
@@ -117,10 +117,10 @@ def getfilename(dev):
 	:param dev: device name, e.g. "/dev/ttyICSE012A"
 	:returns: filename
 	"""
-	path = os.path.expanduser("~/.icsctl")
+	path = os.path.expanduser("~/.icsectl")
 	if False == os.path.exists(path):
 		os.mkdir(path)
-	filename = path + "/icsctl" + dev.replace("/", "-")
+	filename = path + "/icsectl" + dev.replace("/", "-")
 	return filename	
 
 def readstatus(dev):
@@ -136,7 +136,7 @@ def readstatus(dev):
 	except FileNotFoundError as err:
 		return 0
 	a = file.readline()
-	if (a == "IcsCtl\n"):
+	if (a == "IcseCtl\n"):
 		a = file.readline()
 		try:
 			bits = int(a)
@@ -157,6 +157,7 @@ def writestatus(dev, bits):
 	:return status: bitmask
 	:raises serial.serialutil.SerialException: communication error
 	"""
+	mask = 255 & int(bits)
 	if dev == None:
 		return
 	# Open serial connection.
@@ -166,10 +167,10 @@ def writestatus(dev, bits):
 		stopbits = serial.STOPBITS_ONE, \
 		bytesize = serial.EIGHTBITS, \
 		timeout = .1)
-	ser.write(bytearray([bits]))
+	ser.write(bytearray([mask]))
 	ser.close()
 	
 	file = open(getfilename(dev), "w")
-	file.write("IcsCtl" + "\n")
-	file.write(str(bits) + "\n")
+	file.write("IcseCtl" + "\n")
+	file.write(str(mask) + "\n")
 	file.close()
