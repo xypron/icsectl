@@ -31,7 +31,7 @@ import icsectl
 
 setup(
 	name='icsectl',
-	version='0.1',
+	version='0.2',
 	description='Control the ICStation USB multi channel relay modules',
 	author='Heinrich Schuchardt',
 	author_email='xypron.glpk@gmx.de',
