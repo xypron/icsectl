@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-file icsctl - controlling ICStation USB multi channel relay modules
+file icsectl - controlling ICStation USB multi channel relay modules
 
 Copyright (c) 2016, Heinrich Schuchardt <xypron.glpk@gmx.de>
 All rights reserved.
@@ -108,7 +108,7 @@ def usage():
 	"""
 	Outputs the online help.
 	"""
-	print("Usage: icsctl [Options]")
+	print("Usage: icsectl [Options]")
 	print("control ICStation USB multi channel relay module")
 	print()
 	print("  -c         clear, switch off all outlets")

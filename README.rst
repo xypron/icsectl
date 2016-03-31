@@ -10,8 +10,8 @@ Initialization
 The initialization of the devices is handled by udev.
 To set up udev::
 
-    sudo cp examples/icsudev.py /lib/udev
-    sudo cp examples/99-icsctl.rules /etc/udev/rules.d
+    sudo cp examples/icseudev.py /lib/udev
+    sudo cp examples/99-icsectl.rules /etc/udev/rules.d
     sudo udevadm control --reload-rules
 
 When a device is plugged in the relays are switched on by default.
@@ -35,7 +35,7 @@ To allow a user to use the device call::
 Usage
 -----
 
-The script examples/icsctl can be used to switch individual relays.
+The script examples/icsectl can be used to switch individual relays.
 The status is kept in a file in the user's home directory.
 If the file does not yet exist, it is assumed that all relays are switched off.
 
