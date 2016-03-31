@@ -8,7 +8,7 @@ Initialization
 --------------
 
 The initialization of the devices is handled by udev.
-To set udev up
+To set udev up::
 
     sudo cp examples/icsudev.py /lib/udev
     sudo cp examples/99-icsctl.rules /etc/udev/rules.d
@@ -28,14 +28,30 @@ Permissions
 
 Per default, only root is allowed to use devices directly.
 On Debian and Ubuntu serial USB devices are assigned to group dialout.
-To allow a user to use the device call
+To allow a user to use the device call::
 
     adduser USER dialout
 
 Usage
 -----
 
-The script examples/icsctl 
+The script examples/icsctl can be used to switch individual relays.
+The status is kept in a temporary file. If the file does not yet
+exist it is assumed that all relays are switched off.
+
+Links
+-----
+
+An overview of udev rules is provided at
+http://www.reactivated.net/writing_udev_rules.html.
+
+These are links to the devices on the vendor's site
+
+* http://www.icstation.com/icstation-micro-control-channel-relay-module-p-4012.html
+
+* http://www.icstation.com/icstation-micro-control-channel-relay-module-icse013a-p-4013.html
+
+* http://www.icstation.com/icstation-channel-micro-relay-module-icse014a-p-5185.html
 
 License
 -------
