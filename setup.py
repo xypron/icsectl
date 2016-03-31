@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright (c) 2016, Heinrich Schuchardt <xypron.glpk@gmx.de>
 # All rights reserved.
@@ -52,12 +52,12 @@ Initialization
 The initialization of the devices is handled by udev.
 To set udev up::
 
-    sudo cp examples/icsudev.py /lib/udev
-    sudo cp examples/99-icsctl.rules /etc/udev/rules.d
+    sudo cp examples/icseudev.py /lib/udev
+    sudo cp examples/99-icsectl.rules /etc/udev/rules.d
     sudo udevadm control --reload-rules
 
 When a device is plugged in the relays are switched on by default.
-After detection the icsudev.py script switches them off.
+After detection the icseudev.py script switches them off.
 
 Symbolic links /dev/ttyICSE012A, /dev/ttyICSE013A, /devttyICSE014A are
 created if a respective device is connected. If another PL2303 device
@@ -77,7 +77,7 @@ To allow a user to use the device call::
 Usage
 -----
 
-The script examples/icsctl can be used to switch individual relays.
+The script examples/icsectl can be used to switch individual relays.
 The status is kept in a file in the user's home directory.
 If the file does not yet exist, it is assumed that all relays are switched off.
 
