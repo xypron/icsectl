@@ -1,0 +1,54 @@
+#!/usr/bin/python
+
+import os
+import serial
+import sys
+import syslog
+
+syslog.openlog("IcsUdev")
+try:
+	tty = os.environ["DEVNAME"]
+except KeyError:
+	syslog.syslog(syslog.LOG_ERR, "KeyError")
+	sys.exit(1)
+
+# Open serial connection.
+ser = serial.Serial(
+	port = tty, \
+	baudrate =  9600, \
+	stopbits = serial.STOPBITS_ONE, \
+	bytesize = serial.EIGHTBITS, \
+	timeout = .1)
+
+# Get model information.
+c = ser.read(1)
+ser.write(b'P')
+c = ser.read(1)
+if len(c) > 0:
+	a = ord(c)
+	if a == 171:
+		syslog.syslog(syslog.LOG_NOTICE, 'ICSE012A initalized')
+		print("ttyICSE012A")
+	elif a == 172:
+		syslog.syslog(syslog.LOG_NOTICE, 'ICSE013A initialized')
+		print("ttyICSE013A")
+	elif a == 173:
+		syslog.syslog(syslog.LOG_NOTICE, 'ICSE014A initialized')
+		print("ttyICSE0134")
+	else:
+		syslog.syslog(syslog.LOG_NOTICE,
+			"other serial device, id {}".format(a))
+		print("ttyPL2303")
+		sys.exit(0)
+	ser.write(b'Q')
+else:
+	syslog.syslog(syslog.LOG_NOTICE, "other serial device")
+	print("ttyPL2303")
+	sys.exit(0)
+
+# switch all relays off
+ser.write(bytearray([0]))
+
+# Close serial connection
+ser.close()
+
