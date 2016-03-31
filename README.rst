@@ -36,8 +36,8 @@ Usage
 -----
 
 The script examples/icsctl can be used to switch individual relays.
-The status is kept in a temporary file. If the file does not yet
-exist it is assumed that all relays are switched off.
+The status is kept in a file in the user's home directory.
+If the file does not yet exist, it is assumed that all relays are switched off.
 
 Links
 -----
