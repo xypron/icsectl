@@ -26,14 +26,14 @@
 
 """Control ICStation USB multi channel relay modules
 
-IcsCtl is a library to control the ICStation USB multi channel relay
+IcseCtl is a library to control the ICStation USB multi channel relay
 modules (ICSE012A, ICSE013A, ICSE014A).
 
 Initialization
 --------------
 
 The initialization of the devices is handled by udev.
-To set udev up::
+To set up udev::
 
     sudo cp examples/icsudev.py /lib/udev
     sudo cp examples/99-icsctl.rules /etc/udev/rules.d

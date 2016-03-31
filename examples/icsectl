@@ -83,6 +83,7 @@ def main():
 	except serial.serialutil.SerialException as err:
 		print(err)
 		sys.exit(1)
+	checkdev(dev)
 	printstatus(dev,bits)
 
 def printstatus(dev, bits):

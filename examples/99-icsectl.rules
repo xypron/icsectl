@@ -1,0 +1,1 @@
+ACTION=="add" SUBSYSTEM=="tty", ATTRS{idVendor}=="067b", ATTRS{idProduct}=="2303", PROGRAM="icseudev %k", SYMLINK+="%c{1}"
