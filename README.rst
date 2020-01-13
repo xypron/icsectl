@@ -39,6 +39,14 @@ The script examples/icsectl can be used to switch individual relays.
 The status is kept in a file in the user's home directory.
 If the file does not yet exist, it is assumed that all relays are switched off.
 
+Caveats
+-------
+
+The PL2303 driver may try to bind to the relay card. You can blacklist the
+pl2303 module by creating a file /etc/modprobe.d/blacklist-pl2303.conf with::
+
+    blacklist pl2303
+
 Links
 -----
 
