@@ -36,7 +36,7 @@ setup(
 	author='Heinrich Schuchardt',
 	author_email='xypron.glpk@gmx.de',
 	license = 'BSD',
-	url='https://github.com/xypron/pysispm',
+	url='https://github.com/xypron/icsectl',
 	packages=['icsectl'],
 	long_description =
 """
